@@ -2,6 +2,10 @@
 name = "needs_env_var"
 version = "1.0.0"
 edition = "2021"
+description = "Skip compilation if environment variable is missing"
+license = "MIT"
+repository = "https://github.com/HerrMuellerluedenscheid/needs_env_var"
+keywords = ["test"]
 
 [lib]
 proc-macro = true
