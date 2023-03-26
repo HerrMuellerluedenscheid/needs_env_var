@@ -8,6 +8,8 @@ Skip code (such as a test) **at compile time** if an environment variable is und
 `some_test` will not be compiled if `SOMEENVIRONMENTVARIABLE` is not defined:
 
 ```rust
+use needs_env_var::*;
+
 #[needs_env_var(SOMEENVIRONMENTVARIABLE)]
 #[test]
 fn some_test() {
