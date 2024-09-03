@@ -15,6 +15,20 @@ use needs_env_var::*;
 fn some_test() {
     assert!(1 == 1);
 }
+
+// or if its specified value not matched
+#[needs_env_var(SOMEENVIRONMENTVARIABLE = 1)]
+#[test]
+fn some_test() {
+    assert!(1 == 1);
+}
+
+
+#[needs_env_var(SOMEENVIRONMENTVARIABLE=1)]
+#[test]
+fn some_test() {
+    assert!(1 == 1);
+}
 ```
 
 **Note:** As `needs_env_var` is evaluated at compile time you need to force a re-compilation an environment variable
