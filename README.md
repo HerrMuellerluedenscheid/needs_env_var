@@ -1,5 +1,7 @@
-Needs environment variable
+Needs Environment Variable
 ==========================
+
+[![Crates.io Version](https://img.shields.io/crates/v/needs_env_var)](https://crates.io/crates/needs_env_var)
 
 Skip code (such as a test) **at compile time** if an environment variable is undefined.
 
@@ -31,5 +33,5 @@ fn some_test() {
 }
 ```
 
-**Note:** As `needs_env_var` is evaluated at compile time you need to force a re-compilation an environment variable
-is defined after compilation, e.g. with `cargo clean`.
+❗**Note:** As `needs_env_var` is evaluated at compile time you need to force a re-compilation an environment variable
+is defined after compilation, e.g. with `cargo clean`❗ 
