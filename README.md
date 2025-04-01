@@ -3,11 +3,11 @@ Needs Environment Variable
 
 [![Crates.io Version](https://img.shields.io/crates/v/needs_env_var)](https://crates.io/crates/needs_env_var)
 
-Skip code (such as a test) **at compile time** if an environment variable is undefined.
+Early return from a test (or method in general) if an environment variable is undefined or does not match a specific value.
 
 # Example
 
-`some_test` will not be compiled if `SOMEENVIRONMENTVARIABLE` is not defined:
+`some_test` will be skipped if `SOMEENVIRONMENTVARIABLE` is not defined or does not match `1` (examples 2 & 3).
 
 ```rust
 use needs_env_var::*;
@@ -32,6 +32,3 @@ fn some_test() {
     assert!(1 == 1);
 }
 ```
-
-❗**Note:** As `needs_env_var` is evaluated at compile time you need to force a re-compilation an environment variable
-is defined after compilation, e.g. with `cargo clean`❗ 
