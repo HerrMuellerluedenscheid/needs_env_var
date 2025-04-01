@@ -1,11 +1,16 @@
 [package]
 name = "needs_env_var"
-version = "1.1.0"
+version = "2.0.0"
 edition = "2021"
-description = "Skip compilation if environment variable is missing"
+description = "Skip a test if an environment variable is undefined or has a specific value."
 license = "MIT"
 repository = "https://github.com/HerrMuellerluedenscheid/needs_env_var"
 keywords = ["test"]
 
 [lib]
 proc-macro = true
+
+[dependencies]
+syn = { version = "2.0.100", features = ["full"] }
+quote = "1.0"
+

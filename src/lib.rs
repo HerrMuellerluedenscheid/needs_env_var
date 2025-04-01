@@ -1,23 +1,58 @@
 use proc_macro::TokenStream;
-use std::env::var;
+use quote::quote;
+use syn::{
+    parse::{Parse, ParseStream},
+    parse_macro_input, ItemFn, LitStr,
+};
 
+struct InputArgs {
+    environment_variable: LitStr,
+}
 
-/// Skip compilation if the environment variable `env_var` is undefined or if its content does not
-/// match the provided value.
-#[proc_macro_attribute]
-pub fn needs_env_var(env_var: TokenStream, input: TokenStream) -> TokenStream {
-    let macro_string = env_var.to_string().replace(" = ", "=");
-    let mut parts = macro_string.split('=');
-
-    let var_str = parts.next().expect("macro needs an environment variable name");
-    let matches  = parts.next();
-
-    let var_content = var(var_str);
-    let exists = var_content.is_ok();
-
-    if !exists || matches.is_some() && matches != var_content.ok().as_deref() {
-        println!("\x1b[93mskipped. environment variable: \"{}\" did not match or was not set.\x1b[0m", var_str);
-        return TokenStream::new();
+impl Parse for InputArgs {
+    fn parse(input: ParseStream) -> syn::Result<Self> {
+        let environment_variable = input.parse::<LitStr>()?;
+        Ok(Self {
+            environment_variable,
+        })
     }
-    input
+}
+
+#[proc_macro_attribute]
+pub fn needs_env_var(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(item as ItemFn);
+    let input_args = parse_macro_input!(attr as InputArgs);
+    let environment_variable = input_args.environment_variable.value().replace(" ", "");
+
+    let (env_var, expected_value): (String, Option<String>) =
+        match environment_variable.split_once("=") {
+            Some((key, value)) => (key.to_string(), Some(value.to_string())),
+            None => (environment_variable.clone(), None),
+        };
+
+    let ItemFn {
+        attrs,
+        vis,
+        sig,
+        block,
+    } = input;
+
+    let expanded = quote! {
+        #(#attrs)* #vis #sig {
+            match std::env::var(#env_var) {
+                Err(_) => {eprintln!("\x1b[93mSkipping test because environment variable {} is not set.\x1b[0m", #env_var);
+                    return;
+                }
+                Ok(value) => {
+                    if value != #expected_value {
+                        eprintln!("\x1b[93mSkipping test because environment variable {}={}. Expected: {}.\x1b[0m", #env_var, value, #expected_value);
+                        return;
+                    }
+                }
+            };
+            #block
+        }
+    };
+
+    TokenStream::from(expanded)
 }
