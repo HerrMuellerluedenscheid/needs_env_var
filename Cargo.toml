@@ -1,6 +1,6 @@
 [package]
 name = "needs_env_var"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2021"
 description = "Skip a test if an environment variable is undefined or has a specific value."
 license = "MIT"

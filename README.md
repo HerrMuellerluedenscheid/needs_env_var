@@ -7,26 +7,19 @@ Early return from a test (or method in general) if an environment variable is un
 
 # Example
 
-`some_test` will be skipped if `SOMEENVIRONMENTVARIABLE` is not defined or does not match `1` (examples 2 & 3).
+`some_test` will be skipped if `MY_ENVIRONMENT_VARIABLE` is not defined (example 1) or does not match `1` (examples 2).
 
 ```rust
 use needs_env_var::*;
 
-#[needs_env_var(SOMEENVIRONMENTVARIABLE)]
+#[needs_env_var(MY_ENVIRONMENT_VARIABLE)]
 #[test]
 fn some_test() {
     assert!(1 == 1);
 }
 
 // or if its specified value not matched
-#[needs_env_var(SOMEENVIRONMENTVARIABLE = 1)]
-#[test]
-fn some_test() {
-    assert!(1 == 1);
-}
-
-
-#[needs_env_var(SOMEENVIRONMENTVARIABLE=1)]
+#[needs_env_var(MY_ENVIRONMENT_VARIABLE=1)]
 #[test]
 fn some_test() {
     assert!(1 == 1);
