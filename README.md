@@ -12,16 +12,17 @@ Early return from a test (or method in general) if an environment variable is un
 ```rust
 use needs_env_var::*;
 
+// Test will be skipped if `MY_ENVIRONMENT_VARIABLE` is not defined
 #[needs_env_var(MY_ENVIRONMENT_VARIABLE)]
 #[test]
 fn some_test() {
-    assert!(1 == 1);
+    // ...
 }
 
-// or if its specified value not matched
+// or if does not match `1`
 #[needs_env_var(MY_ENVIRONMENT_VARIABLE=1)]
 #[test]
 fn some_test() {
-    assert!(1 == 1);
+    // ...
 }
 ```
